@@ -12,10 +12,7 @@ public class BouncingBallGame extends Game{
 
 
     public BouncingBallGame() {
-
         //frame.setUndecorated(true);
-
-
 
     }
 
