@@ -19,18 +19,16 @@ public class Game  {
         initializedFrame();
         //frame.setUndecorated(true);
 
-        panel = new JPanel();
-        panel.setFocusable(true);
-        panel.setDoubleBuffered(true);
-        frame.add(panel);
+        initializedPanel();
         ball = new Ball(25);
     }
 
 
 
+
     public void start() {
         frame.setVisible(true);
-        before = System.currentTimeMillis();
+        updateSyncTime();
 
 
         while (playing) {
@@ -54,9 +52,13 @@ public class Game  {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            before = System.currentTimeMillis();
+            updateSyncTime();
 
         }
+    }
+
+    private void updateSyncTime() {
+        before = System.currentTimeMillis();
     }
 
     private RenderingHints getRenderingHints() {
@@ -89,6 +91,12 @@ public class Game  {
     }
 
 
+    private void initializedPanel() {
+        panel = new JPanel();
+        panel.setFocusable(true);
+        panel.setDoubleBuffered(true);
+        frame.add(panel);
+    }
     private void initializedFrame() {
         frame = new JFrame();
         frame.setSize(800, 600);
