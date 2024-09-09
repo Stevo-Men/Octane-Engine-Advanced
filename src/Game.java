@@ -18,7 +18,7 @@ public abstract class Game {
         initialize();
     }
 
-    public void start() {
+    public final void start() {
         initialize();
         run();
     }
