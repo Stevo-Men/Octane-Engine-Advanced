@@ -30,29 +30,33 @@ public class Game  {
         frame.setVisible(true);
         updateSyncTime();
 
-
         while (playing) {
             bufferedImage = new BufferedImage(800,600,BufferedImage.TYPE_INT_RGB);
             bufferEngine = bufferedImage.createGraphics();
             bufferEngine.setRenderingHints(buildRenderingHints());
 
-
             update();
             drawOnBuffer();
             drawBufferOnScreen();
-
-            long sleep = SLEEP - (System.currentTimeMillis() - before);
-            if (sleep < 4) {
-                sleep = 4;
-            }
-            try {
-                Thread.sleep(sleep);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            updateSyncTime();
-
+            sleep();
         }
+    }
+
+    private void sleep() {
+        try {
+            Thread.sleep(getSleepTime());
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        updateSyncTime();
+    }
+
+    private long getSleepTime() {
+        long sleep = SLEEP - (System.currentTimeMillis() - before);
+        if (sleep < 4) {
+            sleep = 4;
+        }
+        return sleep;
     }
 
     private static RenderingHints buildRenderingHints() {
