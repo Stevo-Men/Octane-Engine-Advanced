@@ -11,8 +11,11 @@ public abstract class Game {
 
     protected abstract void drawOnBuffer(Graphics2D bufferEngine);
 
+    protected abstract  void initialize();
+
     public Game() {
         renderingEngine = new RenderingEngine();
+        initialize();
     }
 
     public void start() {

@@ -16,8 +16,14 @@ public class BouncingBallGame extends Game{
         //frame.setUndecorated(true);
 
 
+
+    }
+
+    @Override
+    protected void initialize() {
         ball = new Ball(25);
     }
+
 
     @Override
     public void update() {
