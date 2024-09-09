@@ -5,17 +5,19 @@ public class Ball {
     public static final int DEFAULT_SPEED = 5;
     private int radius = 25;
     private int speed;
-    private int x,y;
-    private int dx,dy;
+    private int x, y;
+    private int dx, dy;
+    private Color color;
 
-    public Ball(int radius, int speed) {
+    public Ball(int radius, int speed, Color color) {
         this.radius = radius;
         this.speed = speed;
+        this.color = color;
         initializePosition();
     }
 
     public Ball(int radius) {
-        this(radius, DEFAULT_SPEED);
+        this(radius, DEFAULT_SPEED, Color.WHITE);
     }
 
     public void update() {
@@ -30,7 +32,7 @@ public class Ball {
     }
 
     public void draw(Graphics2D bufferEngine) {
-        bufferEngine.setPaint(Color.WHITE);
+        bufferEngine.setPaint(color);
         bufferEngine.fillOval(x, y, radius * 2, radius * 2);
     }
 
@@ -54,6 +56,6 @@ public class Ball {
     }
 
     private int randomNumber(int min, int max) {
-        return (new Random()).nextInt((max - min) +1) + min;
+        return (new Random()).nextInt((max - min) + 1) + min;
     }
 }

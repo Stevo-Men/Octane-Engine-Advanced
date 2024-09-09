@@ -1,10 +1,10 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.Random;
 
-public class GameWindow extends JFrame {
+public class Game  {
 
+    private JFrame frame;
     private static final int SLEEP = 25;
     private JPanel panel;
     private Graphics2D bufferEngine;
@@ -14,26 +14,24 @@ public class GameWindow extends JFrame {
     private int score;
     private Ball ball;
 
-    public GameWindow() {
-        setSize(800,600);
-        setLocationRelativeTo(null);
-        setResizable(false);
-        setTitle("Bouncing Balls");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setState(JFrame.NORMAL);
-        setState(JFrame.NORMAL);
+
+    public Game() {
+        initializedFrame();
+        //frame.setUndecorated(true);
 
         panel = new JPanel();
-        panel.setBackground(Color.BLUE);
         panel.setFocusable(true);
         panel.setDoubleBuffered(true);
-        add(panel);
+        frame.add(panel);
+        ball = new Ball(25);
     }
 
+
+
     public void start() {
-        setVisible(true);
+        frame.setVisible(true);
         before = System.currentTimeMillis();
-        ball = new Ball(25);
+
 
         while (playing) {
             bufferedImage = new BufferedImage(800,600,BufferedImage.TYPE_INT_RGB);
@@ -61,11 +59,19 @@ public class GameWindow extends JFrame {
         }
     }
 
+    private RenderingHints getRenderingHints() {
+        RenderingHints hints = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        hints.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        return hints;
+    }
+
+
+
     private void update() {
-       ball.update();
-       if (ball.hasTouched()) {
-           score += 10;
-       }
+        ball.update();
+        if (ball.hasTouched()) {
+            score += 10;
+        }
     }
 
     private void drawOnBuffer() {
@@ -83,4 +89,12 @@ public class GameWindow extends JFrame {
     }
 
 
+    private void initializedFrame() {
+        frame = new JFrame();
+        frame.setSize(800, 600);
+        frame.setLocationRelativeTo(null);
+        frame.setResizable(false);
+        frame.setTitle("Bouncing Balls");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
 }
