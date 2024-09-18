@@ -2,6 +2,7 @@ package Octane;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 
 public class RenderingEngine {
@@ -40,6 +41,10 @@ public class RenderingEngine {
         graphics.drawImage(bufferedImage, 0, 0, panel);
         Toolkit.getDefaultToolkit().sync();
         graphics.dispose();
+    }
+
+    public void addKeyListener(KeyListener keyListener) {
+        panel.addKeyListener(keyListener);
     }
 
     private void initializedPanel() {
