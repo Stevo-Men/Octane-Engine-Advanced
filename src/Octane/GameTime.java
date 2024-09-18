@@ -1,3 +1,5 @@
+package Octane;
+
 import java.util.concurrent.TimeUnit;
 
 public class GameTime {
@@ -33,7 +35,7 @@ public class GameTime {
 
     }
 
-    public GameTime() {
+    protected GameTime() {
         updateSyncTime();
         gameStartTime = System.currentTimeMillis();
         fpsTimeDelta = 0;

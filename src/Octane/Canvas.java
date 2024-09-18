@@ -1,3 +1,5 @@
+package Octane;
+
 import java.awt.*;
 
 public class Canvas {

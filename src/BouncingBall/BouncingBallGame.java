@@ -1,6 +1,13 @@
+package BouncingBall;
+
+import Octane.Canvas;
+import Octane.Game;
+import Octane.GameTime;
+import Octane.RenderingEngine;
+
 import java.awt.*;
 
-public final class BouncingBallGame extends Game{
+public final class BouncingBallGame extends Game {
 
     private static final int SLEEP = 25;
     private boolean playing = true;
