@@ -31,9 +31,9 @@ public class Ball {
         }
     }
 
-    public void draw(Graphics2D bufferEngine) {
-        bufferEngine.setPaint(color);
-        bufferEngine.fillOval(x, y, radius * 2, radius * 2);
+    public void draw(Canvas canvas) {
+
+        canvas.drawCircle(x, y, radius * 2,  Color.RED);
     }
 
     public boolean hasTouchVertical() {

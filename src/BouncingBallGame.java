@@ -1,6 +1,6 @@
 import java.awt.*;
 
-public class BouncingBallGame extends Game{
+public final class BouncingBallGame extends Game{
 
     private static final int SLEEP = 25;
     private boolean playing = true;
@@ -19,7 +19,7 @@ public class BouncingBallGame extends Game{
 
     @Override
     protected void initialize() {
-        ball = new Ball(25);
+        ball = new Ball(1);
     }
 
 
@@ -32,11 +32,10 @@ public class BouncingBallGame extends Game{
     }
 
     @Override
-    public void drawOnBuffer(Graphics2D bufferEngine) {
-        ball.draw(bufferEngine);
+    public void draw(Canvas canvas) {
+        ball.draw(canvas);
+        canvas.drawString("Score: " + score, 10, 20, Color.RED);
 
-        bufferEngine.setPaint(Color.WHITE);
-        bufferEngine.drawString("Score: " + score, 10, 20);
     }
 
 

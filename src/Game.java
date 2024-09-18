@@ -2,16 +2,17 @@ import java.awt.*;
 
 public abstract class Game {
 
-    private static final int SLEEP = 25;
+
     private boolean playing = true;
-    private long before;
+    private GameTime gameTime;
     private RenderingEngine renderingEngine;
 
     protected abstract void update();
 
-    protected abstract void drawOnBuffer(Graphics2D bufferEngine);
+    protected abstract void draw(Canvas bufferEngine);
 
     protected abstract  void initialize();
+
 
     public Game() {
         renderingEngine = new RenderingEngine();
@@ -25,37 +26,17 @@ public abstract class Game {
 
     private void run() {
         renderingEngine.start();
-        updateSyncTime();
+        gameTime = new GameTime();
         while (playing) {
             update();
-            drawOnBuffer(renderingEngine.buildBuffer());
+            draw(renderingEngine.buildCanvas());
             renderingEngine.drawBufferOnScreen();
-            sleep();
+            gameTime.sleep();
         }
     }
 
 
-    private void sleep() {
-        try {
-            Thread.sleep(getSleepTime());
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        updateSyncTime();
-    }
 
-    private long getSleepTime() {
-        long sleep = SLEEP - (System.currentTimeMillis() - before);
-        if (sleep < 4) {
-            sleep = 4;
-        }
-        return sleep;
-    }
-
-
-    private void updateSyncTime() {
-        before = System.currentTimeMillis();
-    }
 
 
 }
