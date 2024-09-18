@@ -2,28 +2,35 @@ package MovingRectangle;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.HashMap;
 
-public class Controller implements KeyListener {
+public abstract class Controller implements KeyListener {
+
+    private final HashMap<Integer, Boolean> pressedKeys;
 
     private boolean upPressed;
     private boolean downPressed;
     private boolean leftPressed;
     private boolean rightPressed;
 
-    public boolean isUpPressed() {
-        return upPressed;
+    public Controller() {
+        pressedKeys = new HashMap<>();
     }
 
-    public boolean isDownPressed() {
-        return downPressed;
+    protected void bindKey(int keyCode) {
+        pressedKeys.put(keyCode, false);
     }
 
-    public boolean isLeftPressed() {
-        return leftPressed;
+    protected void unbindKey(int keyCode) {
+        pressedKeys.remove(keyCode);
     }
 
-    public boolean isRightPressed() {
-        return rightPressed;
+    protected  void clearKeys() {
+        pressedKeys.clear();
+    }
+
+    public boolean isKeyPressed(int keycode) {
+        return pressedKeys.containsKey(keycode) && pressedKeys.get(keycode);
     }
 
     @Override
@@ -33,33 +40,17 @@ public class Controller implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_UP) {
-            upPressed = true;
-        }
-        if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            downPressed = true;
-        }
-        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            leftPressed = true;
-        }
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            rightPressed = true;
+        int keyCode = e.getKeyCode();
+        if (pressedKeys.containsKey(keyCode)) {
+            pressedKeys.put(keyCode, true);
         }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_UP) {
-            upPressed = false;
-        }
-        if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            downPressed = false;
-        }
-        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            leftPressed = false;
-        }
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            rightPressed = false;
+        int keyCode = e.getKeyCode();
+        if (pressedKeys.containsKey(keyCode)) {
+            pressedKeys.put(keyCode, false);
         }
     }
 }

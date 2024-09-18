@@ -2,6 +2,7 @@ package MovingRectangle;
 
 import Octane.Canvas;
 import Octane.Game;
+import Octane.GamePad;
 
 import java.awt.*;
 
@@ -9,18 +10,21 @@ public class MovingRectangleGame extends Game {
 
     Player player;
     Npc npc;
-    Controller controller;
+    GamePad gamePad;
 
     @Override
     protected void initialize() {
-        player = new Player(controller);
-        super.addKeyListener(controller);
+        player = new Player(gamePad);
+        super.addKeyListener(gamePad);
         npc = new Npc();
-        controller = new Controller();
+        gamePad = new GamePad();
     }
 
     @Override
     protected void update() {
+        if (gamePad.isQuitPressed()) {
+            stopPlaying();
+        }
         player.update();
         npc.update();
 
