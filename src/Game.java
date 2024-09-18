@@ -1,5 +1,3 @@
-import java.awt.*;
-
 public abstract class Game {
 
 
@@ -31,7 +29,7 @@ public abstract class Game {
             update();
             draw(renderingEngine.buildCanvas());
             renderingEngine.drawBufferOnScreen();
-            gameTime.sleep();
+            gameTime.synchronize();
         }
     }
 

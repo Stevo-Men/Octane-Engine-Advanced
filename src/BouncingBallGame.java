@@ -19,7 +19,7 @@ public final class BouncingBallGame extends Game{
 
     @Override
     protected void initialize() {
-        ball = new Ball(1);
+        ball = new Ball(5);
     }
 
 
@@ -34,8 +34,10 @@ public final class BouncingBallGame extends Game{
     @Override
     public void draw(Canvas canvas) {
         ball.draw(canvas);
+        GameTime.getCurrentTime();
         canvas.drawString("Score: " + score, 10, 20, Color.RED);
-
+        canvas.drawString(GameTime.getElapsedFormattedTime(), 10, 40, Color.WHITE);
+        canvas.drawString("FPS " + GameTime.getCurrentFps(), 10, 60, Color.WHITE);
     }
 
 
