@@ -1,5 +1,7 @@
 package MovingRectangle;
 
+import Octane.RenderingEngine;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.HashMap;
@@ -15,6 +17,7 @@ public abstract class Controller implements KeyListener {
 
     public Controller() {
         pressedKeys = new HashMap<>();
+        RenderingEngine.getInstance().addKeyListener(this);
     }
 
     protected void bindKey(int keyCode) {

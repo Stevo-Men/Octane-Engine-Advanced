@@ -6,7 +6,7 @@ public abstract class Game {
 
 
     private boolean playing = true;
-    private GameTime gameTime;
+
     private RenderingEngine renderingEngine;
 
     protected abstract void update();
@@ -17,7 +17,7 @@ public abstract class Game {
 
 
     public Game() {
-        renderingEngine = new RenderingEngine();
+        renderingEngine = RenderingEngine.getInstance();
         initialize();
     }
 
@@ -36,7 +36,7 @@ public abstract class Game {
 
     private void run() {
         renderingEngine.start();
-        gameTime = new GameTime();
+        GameTime gameTime = new GameTime();
         while (playing) {
             update();
             draw(renderingEngine.buildCanvas());
