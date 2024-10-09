@@ -12,13 +12,13 @@ public class Tank extends ContrallableEntity {
 
     public Tank(MovementController controller) {
         super(controller);
-        setDimensions(30,50);
+        setDimensions(40,40);
         teleport(300,400);
         setSpeed(2);
     }
 
     public Missile fire() {
-        cooldown = 05;
+        cooldown = 10;
         return new Missile(this);
     }
 
@@ -37,5 +37,9 @@ public class Tank extends ContrallableEntity {
     @Override
     public void draw(Canvas canvas) {
         canvas.drawRectangle(this, Color.GREEN);
+        int cooldownWidth = (cooldown * getWidth()) / 40;
+        canvas.drawRectangle(x, y - 5, 20, 4, Color.RED);
+        canvas.drawRectangle(x, y - 5, cooldownWidth * 2, 4, Color.YELLOW);
+
     }
 }
