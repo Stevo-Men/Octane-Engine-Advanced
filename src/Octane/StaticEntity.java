@@ -1,12 +1,22 @@
 package Octane;
 
+import java.awt.*;
+
 public abstract class StaticEntity {
     protected int x;
     protected int y;
-    private int width;
-    private int height;
+    protected int width;
+    protected int height;
 
     public abstract void draw(Canvas canvas);
+
+    public boolean intersectWith(StaticEntity entity) {
+        return getBounds().intersects(entity.getBounds());
+    }
+
+    protected Rectangle getBounds() {
+        return new Rectangle(x, y, width, height);
+    }
 
     public void teleport(int x, int y) {
         this.x = x;
