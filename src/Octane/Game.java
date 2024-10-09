@@ -9,11 +9,13 @@ public abstract class Game {
 
     private RenderingEngine renderingEngine;
 
+    protected abstract  void initialize();
+
     protected abstract void update();
 
     protected abstract void draw(Canvas bufferEngine);
 
-    protected abstract  void initialize();
+
 
 
     public Game() {

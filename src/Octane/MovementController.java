@@ -3,6 +3,7 @@ package Octane;
 import MovingRectangle.Controller;
 
 import java.awt.event.KeyEvent;
+import java.security.Key;
 
 public class MovementController extends Controller {
 
@@ -16,6 +17,32 @@ public class MovementController extends Controller {
         bindKey(downKey);
         bindKey(leftKey);
         bindKey(rightKey);
+    }
+
+    public void userWASDKeys() {
+        setUpKey(KeyEvent.VK_W);
+        setDownKey(KeyEvent.VK_S);
+        setLeftKey(KeyEvent.VK_A);
+        setRightKey(KeyEvent.VK_D);
+    }
+
+    public Direction getDirection() {
+        if (isLeftPressed()) {
+            return Direction.LEFT;
+        }
+
+        if (isRightPressed()) {
+            return Direction.RIGHT;
+        }
+
+        if (isUpPressed()) {
+            return Direction.UP;
+        }
+
+        if (isDownPressed()) {
+            return Direction.DOWN;
+        }
+        return null;
     }
 
     public boolean isLeftPressed() {
