@@ -1,7 +1,9 @@
 package Tank;
 
 import Octane.Canvas;
+import Octane.CollidableRepository;
 import Octane.Game;
+import Octane.StaticEntity;
 import Tank.GamePad;
 
 import java.util.ArrayList;
@@ -12,6 +14,7 @@ public class TankGame extends Game {
     private Tank tank;
     private ArrayList<Missile> missiles;
     private ArrayList<Brick> bricks;
+    private ArrayList<StaticEntity> killedEntities;
     @Override
     protected void initialize() {
         gamePad = new GamePad();
@@ -35,9 +38,27 @@ public class TankGame extends Game {
             missiles.add(tank.fire());
         }
         tank.update();
+
+        ArrayList<StaticEntity> killedEntities = new ArrayList<>();
         for (Missile missile : missiles) {
             missile.update();
+            for (Brick brick : bricks) {
+                if (missile.hitBoxIntersectWith(brick)) {
+                    killedEntities.add(missile);
+                    killedEntities.add(brick);
+                }
+            }
         }
+
+        for (StaticEntity killedEntity : killedEntities) {
+            if (killedEntity instanceof Brick) {
+                bricks.remove(killedEntity);
+            }
+            if (killedEntity instanceof Missile) {
+                missiles.remove(killedEntity);
+            }
+        }
+        CollidableRepository.getInstance().unregisterEntities(killedEntities);
     }
 
     @Override

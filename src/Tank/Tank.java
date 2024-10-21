@@ -27,6 +27,7 @@ public class Tank extends ContrallableEntity {
     }
     @Override
     public void update() {
+        super.update();
         moveWithController();
         cooldown--;
         if (cooldown < 0) {
@@ -40,6 +41,10 @@ public class Tank extends ContrallableEntity {
         int cooldownWidth = (cooldown * getWidth()) / 40;
         canvas.drawRectangle(x, y - 5, 20, 4, Color.RED);
         canvas.drawRectangle(x, y - 5, cooldownWidth * 2, 4, Color.YELLOW);
+
+        if (hasMoved()) {
+            drawHitBox(canvas);
+        }
 
     }
 }
