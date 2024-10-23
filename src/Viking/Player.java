@@ -1,9 +1,8 @@
 package Viking;
 
+import Octane.*;
 import Octane.Canvas;
-import Octane.ContrallableEntity;
 import Octane.GamePad;
-import Octane.MovementController;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -13,6 +12,9 @@ import java.io.IOException;
 public class Player extends ContrallableEntity {
     private static final String SPRITE_PATH = "images/player.png";
 
+    private static final int ANIMATION_SPEED = 8;
+    private int currentAnimationFrame = 1;
+    private int nextFrame = ANIMATION_SPEED;
     private BufferedImage image;
     private Image[] rightFrames;
     private Image[] leftFrames;
@@ -69,10 +71,33 @@ public class Player extends ContrallableEntity {
     public void update() {
         super.update();
         moveWithController();
+
+        if (hasMoved()) {
+            --nextFrame;
+            if (nextFrame == 0) {
+                ++currentAnimationFrame;
+                if (currentAnimationFrame >= leftFrames.length) {
+                    currentAnimationFrame = 0;
+                }
+                nextFrame = ANIMATION_SPEED;
+            }
+        } else {currentAnimationFrame = 1;
+        }
     }
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawImage(downFrames[1], x, y);
+        if (getDirection() == Direction.RIGHT) {
+            canvas.drawImage(rightFrames[currentAnimationFrame], x, y);
+        } else if (getDirection() == Direction.LEFT) {
+            canvas.drawImage(leftFrames[currentAnimationFrame], x, y);
+        } else if (getDirection() == Direction.UP) {
+            canvas.drawImage(upFrames[currentAnimationFrame], x, y);
+        } else if (getDirection() == Direction.DOWN) {
+            canvas.drawImage(downFrames[currentAnimationFrame], x, y);
+        }
+//        if (GameConfig.isDebugEnabled()) {
+//            drawHitBox(canvas);
+//        }
     }
 }
