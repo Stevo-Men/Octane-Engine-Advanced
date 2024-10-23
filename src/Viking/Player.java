@@ -1,38 +1,78 @@
 package Viking;
 
 import Octane.Canvas;
+import Octane.ContrallableEntity;
 import Octane.GamePad;
+import Octane.MovementController;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
-public class Player {
+public class Player extends ContrallableEntity {
+    private static final String SPRITE_PATH = "images/player.png";
 
-    private GamePad gamePad;
-    private int x;
-    private int y;
-    private int speed;
+    private BufferedImage image;
+    private Image[] rightFrames;
+    private Image[] leftFrames;
+    private Image[] upFrames;
+    private Image[] downFrames;
 
-    public Player(GamePad gamePad) {
-
-        x = 200;
-        y = 200;
-        speed = 3;
-        this.gamePad = gamePad;
+    public Player(MovementController controller) {
+        super(controller);
+        setDimensions(32,32);
+        setSpeed(3);
+        load();
     }
 
+    private void load() {
+        loadSpriteSheet();
+        loadAnimationFrames();
+    }
+
+    private void loadAnimationFrames() {
+            downFrames = new Image[3];
+            downFrames[0] = image.getSubimage(0, 128, width, height);
+            downFrames[1] = image.getSubimage(32, 128, width, height);
+            downFrames[2] = image.getSubimage(64, 128, width, height);
+
+            leftFrames = new Image[3];
+            leftFrames[0] = image.getSubimage(0, 160, width, height);
+            leftFrames[1] = image.getSubimage(32, 160, width, height);
+            leftFrames[2] = image.getSubimage(64, 160, width, height);
+
+            rightFrames = new Image[3];
+            rightFrames[0] = image.getSubimage(0, 192, width, height);
+            rightFrames[1] = image.getSubimage(32, 192, width, height);
+            rightFrames[2] = image.getSubimage(64, 192, width, height);
+
+            upFrames = new Image[3];
+            upFrames[0] = image.getSubimage(0, 224, width, height);
+            upFrames[1] = image.getSubimage(32, 224, width, height);
+            upFrames[2] = image.getSubimage(64, 224, width, height);
+    }
+
+    private void loadSpriteSheet() {
+            try {
+                image = ImageIO.read(
+                        this.getClass().getClassLoader().getResourceAsStream(SPRITE_PATH)
+                );
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            } finally {
+                //System.out.println("TOUJOURS EXECUTER");
+            }
+    }
+
+    @Override
     public void update() {
-        if (gamePad.isDownPressed()) {
-            y += speed;
-        } else if (gamePad.isUpPressed()) {
-            y -= speed;
-        } else if (gamePad.isLeftPressed()) {
-            x -= speed;
-        } else if (gamePad.isRightPressed()) {
-            x += speed;
-        }
+        super.update();
+        moveWithController();
     }
 
+    @Override
     public void draw(Canvas canvas) {
-        canvas.drawRectangle(x, y, 20, 60, Color.WHITE);
+        canvas.drawImage(downFrames[1], x, y);
     }
 }
