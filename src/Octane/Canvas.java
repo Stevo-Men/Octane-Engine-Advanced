@@ -33,4 +33,16 @@ public class Canvas {
     public void drawImage(Image image, int x, int y) {
         graphics.drawImage(image, x, y, null);
     }
+
+    public void drawText(String text, int x, int y) {
+        graphics.setFont(new Font("Arial", Font.PLAIN, 24));
+        graphics.setColor(Color.WHITE);
+        graphics.drawString(text, x, y);
+    }
+
+    public void drawText(String text, int x, int y, Font font, Color color) {
+        graphics.setFont(font);
+        graphics.setColor(color);
+        graphics.drawString(text, x, y);
+    }
 }
