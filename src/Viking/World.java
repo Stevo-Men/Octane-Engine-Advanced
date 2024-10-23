@@ -8,7 +8,7 @@
     import java.io.IOException;
 
     public class World {
-        private static final String MAP_PATH = "images/demo.png";
+        private static final String MAP_PATH = "images/sewer_map.png";
         private Image background;
 
         public void load() {
