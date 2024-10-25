@@ -11,8 +11,12 @@ public class Menu extends Game {
     private int selectedIndex = 0;
     private String[] menuOptions = {"Start Game", "Options", "Quit"};
     private GamePad gamePad;
-    private static final String MENU_BACKGROUND = "images/sewer_map.png";
+    private static final String MENU_BACKGROUND = "images/menu-background.png";
     private Image menu_background;
+    private boolean upPressedPreviously = false;
+    private boolean downPressedPreviously = false;
+    private boolean enterPressedPreviously = false;
+
 
     @Override
     protected void initialize() {
@@ -33,19 +37,30 @@ public class Menu extends Game {
     }
     @Override
     protected void update() {
+        boolean upPressed = gamePad.isUpPressed();
+        boolean downPressed = gamePad.isDownPressed();
+        boolean enterPressed = gamePad.isEnterPressed();
 
-        if (gamePad.isUpPressed()) {
+        // Check if up was not pressed before but is now pressed (transition)
+        if (upPressed && !upPressedPreviously) {
             selectedIndex = (selectedIndex - 1 + menuOptions.length) % menuOptions.length;
         }
-        if (gamePad.isDownPressed()) {
+
+        // Check if down was not pressed before but is now pressed (transition)
+        if (downPressed && !downPressedPreviously) {
             selectedIndex = (selectedIndex + 1) % menuOptions.length;
         }
 
-        if (gamePad.isEnterPressed()) {
+        // Check if enter was not pressed before but is now pressed (transition)
+        if (enterPressed && !enterPressedPreviously) {
             executeOption();
         }
-    }
 
+        // Update the previous state of the keys for the next update cycle
+        upPressedPreviously = upPressed;
+        downPressedPreviously = downPressed;
+        enterPressedPreviously = enterPressed;
+    }
 
 
     private void executeOption() {
@@ -58,7 +73,6 @@ public class Menu extends Game {
                 System.out.println("Options selected");
                 break;
             case 2:
-                // Quit the application
                 System.exit(0);
                 break;
         }
@@ -66,15 +80,13 @@ public class Menu extends Game {
 
     @Override
     protected void draw(Canvas canvas) {
-        // Draw background (assume backgroundImage is loaded)
         canvas.drawImage(menu_background, 0, 0);
 
-        // Draw menu options
         for (int i = 0; i < menuOptions.length; i++) {
             if (i == selectedIndex) {
-                canvas.drawText("> " + menuOptions[i], 300, 200 + i * 40);
+                canvas.drawText("> " + menuOptions[i], 525, 550 + i * 40);
             } else {
-                canvas.drawText(menuOptions[i], 300, 200 + i * 40);
+                canvas.drawText(menuOptions[i], 525, 550 + i * 40);
             }
         }
     }
