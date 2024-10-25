@@ -13,7 +13,12 @@ public class TheProjektGame extends Game {
     private Player player;
     private GamePad gamePad;
     private World world;
+    private Enemy enemy;
     private int soundCooldown;
+    private static final int SOUND_COOLDOWN_DURATION = 30;
+    private Camera camera;
+    private int cameraWidth = 1200;
+    private int cameraHeight = 900;
 
     @Override
     protected void initialize() {
@@ -22,6 +27,9 @@ public class TheProjektGame extends Game {
         player.teleport(200, 200);
         world = new World();
         world.load();
+        camera = new Camera(cameraWidth, cameraHeight);
+        enemy = new Enemy();
+
 
         try {
             Clip clip = AudioSystem.getClip();
@@ -34,7 +42,7 @@ public class TheProjektGame extends Game {
             e.printStackTrace();
         }
         //RenderingEngine.getInstance().getScreen().fullscreen();
-        //RenderingEngine.getInstance().getScreen().hideCursor();
+        RenderingEngine.getInstance().getScreen().hideCursor();
     }
 
     @Override
@@ -42,25 +50,27 @@ public class TheProjektGame extends Game {
         if (gamePad.isQuitPressed()) {
             stopPlaying();
         }
+
+
         player.update();
+        enemy.update();
+        camera.update(player);
 
-
-
-        soundCooldown--;
-        if (soundCooldown < 0) {
-            soundCooldown = 0;
+        if (soundCooldown > 0) {
+            soundCooldown--;
         }
 
+        // Play the sound effect only if the fire button is pressed and cooldown is 0
         if (gamePad.isFirePressed() && soundCooldown == 0) {
-            soundCooldown--;
             SoundEffect.FIRE.play();
+            soundCooldown = SOUND_COOLDOWN_DURATION; // Reset the cooldown
         }
     }
 
     @Override
     protected void draw(Canvas canvas) {
-        world.draw(canvas);
-        player.draw(canvas);
-
+        world.draw(canvas, -camera.getX(), -camera.getY());
+        player.draw(canvas, -camera.getX(), -camera.getY());
+        enemy.draw(canvas, -camera.getX(), -camera.getY());
     }
 }

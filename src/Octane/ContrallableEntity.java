@@ -1,6 +1,6 @@
 package Octane;
 
-public abstract class ContrallableEntity extends MovableEntity{
+public abstract class ContrallableEntity extends MovableEntity {
     private final MovementController controller;
 
     public ContrallableEntity(MovementController controller) {

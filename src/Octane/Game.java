@@ -6,6 +6,7 @@ public abstract class Game {
 
 
     private boolean playing = true;
+    private Screen screen;
 
     private RenderingEngine renderingEngine;
 
@@ -42,7 +43,7 @@ public abstract class Game {
         while (playing) {
             update();
             draw(renderingEngine.buildCanvas());
-            renderingEngine.drawBufferOnScreen();
+            renderingEngine.drawOnScreen();
             gameTime.synchronize();
         }
         renderingEngine.stop();

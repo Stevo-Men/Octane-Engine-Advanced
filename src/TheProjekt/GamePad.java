@@ -11,10 +11,13 @@ public class GamePad extends MovementController {
     private int fireKey = KeyEvent.VK_SPACE;
     private int enterKey = KeyEvent.VK_ENTER;
 
+
+
     public GamePad() {
         bindKey(quitKey);
         bindKey(fireKey);
         bindKey(enterKey);
+
     }
 
     public boolean isFirePressed() {
@@ -26,5 +29,7 @@ public class GamePad extends MovementController {
     }
 
     public boolean isEnterPressed() { return isKeyPressed(enterKey); }
+
+
 
 }
