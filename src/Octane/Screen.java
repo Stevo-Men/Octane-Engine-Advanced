@@ -10,13 +10,11 @@ public class Screen {
     private Cursor invisibleCursor;
     private GraphicsDevice device;
     private DisplayMode fullscreenDisplayMode;
+    private boolean isFullscreenMode;
 
     public boolean isFullscreenMode() {
         return isFullscreenMode;
     }
-
-    private boolean isFullscreenMode;
-    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
     public Screen() {
         initializeFrame();
@@ -51,7 +49,7 @@ public class Screen {
         if (frameIsVisible) {
             frame.setVisible(true);
         }
-        //fullscreenDisplayMode = findClosestDisplayMode(width, height);
+        fullscreenDisplayMode = findClosestDisplayMode(width, height);
         System.out.println("Fullscreen Mode: " + fullscreenDisplayMode.getWidth() + "x" + fullscreenDisplayMode.getHeight());
     }
 
@@ -71,7 +69,7 @@ public class Screen {
         if (device.isFullScreenSupported()) {
             device.setFullScreenWindow(frame);
         }
-        //device.setDisplayMode(fullscreenDisplayMode);
+        device.setDisplayMode(fullscreenDisplayMode);
         frame.setLocationRelativeTo(null);
         isFullscreenMode = true;
     }

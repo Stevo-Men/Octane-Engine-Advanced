@@ -41,7 +41,7 @@ public class TheProjektGame extends Game {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //RenderingEngine.getInstance().getScreen().fullscreen();
+        RenderingEngine.getInstance().getScreen().toggleFullscreen();
         RenderingEngine.getInstance().getScreen().hideCursor();
     }
 
@@ -60,10 +60,9 @@ public class TheProjektGame extends Game {
             soundCooldown--;
         }
 
-        // Play the sound effect only if the fire button is pressed and cooldown is 0
         if (gamePad.isFirePressed() && soundCooldown == 0) {
             SoundEffect.FIRE.play();
-            soundCooldown = SOUND_COOLDOWN_DURATION; // Reset the cooldown
+            soundCooldown = SOUND_COOLDOWN_DURATION;
         }
     }
 
