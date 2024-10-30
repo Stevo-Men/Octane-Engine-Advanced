@@ -21,6 +21,12 @@ public class Player extends ContrallableEntity {
     private Image[] upFrames;
     private Image[] downFrames;
     private double scaleFactor = 2.0;
+    private static int PLAYER_HEALTH = 100;
+    int knifeMunition = 10;
+    public  int playerHealth = 100;
+    private int cooldown = 0;
+
+
 
     public Player(MovementController controller) {
         super(controller);
@@ -28,6 +34,19 @@ public class Player extends ContrallableEntity {
         setSpeed(4);
         load();
     }
+
+    public Knife throwKnife() {
+        cooldown = 50;
+        knifeMunition--;
+        //soundEffect.KNIFE_THROW.play();
+        return new Knife(this);
+    }
+
+
+    public boolean canThrow() {
+        return cooldown == 0 && knifeMunition > 0;
+    }
+
 
     private void load() {
         loadSpriteSheet();
@@ -79,10 +98,14 @@ public class Player extends ContrallableEntity {
         }
     }
 
+
+
     @Override
     public void update() {
         super.update();
         moveWithController();
+
+
 
         if (hasMoved()) {
             --nextFrame;
@@ -101,17 +124,33 @@ public class Player extends ContrallableEntity {
     @Override
     public void draw(Canvas canvas) {
         draw(canvas, 0, 0);
+
     }
+
+    public int cameraX(int offsetX) {
+        return x + offsetX;
+    }
+
+    public int cameraY(int offsetY) {
+        return y + offsetY;
+    }
+
+
 
     public void draw(Canvas canvas, int offsetX, int offsetY) {
         if (getDirection() == Direction.RIGHT) {
-            canvas.drawImage(rightFrames[currentAnimationFrame], x + offsetX, y + offsetY);
+            canvas.drawImage(rightFrames[currentAnimationFrame], cameraX(offsetX), cameraY(offsetY));
         } else if (getDirection() == Direction.LEFT) {
-            canvas.drawImage(leftFrames[currentAnimationFrame], x + offsetX, y + offsetY);
+            canvas.drawImage(leftFrames[currentAnimationFrame], cameraX(offsetX), cameraY(offsetY));
         } else if (getDirection() == Direction.UP) {
-            canvas.drawImage(upFrames[currentAnimationFrame], x + offsetX, y + offsetY);
+            canvas.drawImage(upFrames[currentAnimationFrame], cameraX(offsetX), cameraY(offsetY));
         } else if (getDirection() == Direction.DOWN) {
-            canvas.drawImage(downFrames[currentAnimationFrame], x + offsetX, y + offsetY);
+            canvas.drawImage(downFrames[currentAnimationFrame], cameraX(offsetX), cameraY(offsetY));
         }
+        canvas.drawRectangle(x + offsetX,y + offsetY - 10,50,5,Color.RED);
+        canvas.drawRectangle(x + offsetX,y + offsetY - 10,PLAYER_HEALTH/2,5,Color.GREEN);
+
     }
+
+
 }

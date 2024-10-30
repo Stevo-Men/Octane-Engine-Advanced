@@ -14,6 +14,7 @@ public class Enemy extends MovableEntity {
     private static final int ANIMATION_SPEED = 8;
     private int currentAnimationFrame = 1;
     private int nextFrame = ANIMATION_SPEED;
+    private static int ENEMY_HEALTH = 100;
     private BufferedImage image;
     private Image[] rightFrames;
     private Image[] leftFrames;
@@ -197,5 +198,7 @@ public class Enemy extends MovableEntity {
         } else if (getDirection() == Direction.DOWN) {
             canvas.drawImage(downFrames[currentAnimationFrame], x + offsetX, y + offsetY);
         }
+        canvas.drawRectangle(x + offsetX,y + offsetY - 10,50,5,Color.RED);
+        canvas.drawRectangle(x + offsetX,y + offsetY - 10,ENEMY_HEALTH/2,5,Color.GREEN);
     }
 }

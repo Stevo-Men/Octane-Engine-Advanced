@@ -45,4 +45,8 @@ public class Canvas {
         graphics.setColor(color);
         graphics.drawString(text, x, y);
     }
+
+    public Graphics2D getGraphics() {
+        return graphics;
+    }
 }

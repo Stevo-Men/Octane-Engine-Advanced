@@ -43,5 +43,6 @@ public class Tree extends StaticEntity {
     @Override
     public void draw(Octane.Canvas canvas) {
         canvas.drawImage(image, x, y);
+        canvas.drawRectangle(this,Color.RED);
     }
 }
