@@ -15,6 +15,7 @@ public class Player extends ContrallableEntity {
     private static final int ANIMATION_SPEED = 8;
     private int currentAnimationFrame = 1;
     private int nextFrame = ANIMATION_SPEED;
+    private static final int FRAME_COUNT = 3;
     private BufferedImage image;
     private Image[] rightFrames;
     private Image[] leftFrames;
@@ -53,27 +54,21 @@ public class Player extends ContrallableEntity {
         loadAnimationFrames();
     }
 
-    private void loadAnimationFrames() {
-        downFrames = new Image[3];
-        downFrames[0] = getScaledImage(image.getSubimage(0, 0, 32, 32));
-        downFrames[1] = getScaledImage(image.getSubimage(32, 0, 32, 32));
-        downFrames[2] = getScaledImage(image.getSubimage(64, 0, 32, 32));
-
-        leftFrames = new Image[3];
-        leftFrames[0] = getScaledImage(image.getSubimage(0, 32, 32, 32));
-        leftFrames[1] = getScaledImage(image.getSubimage(32, 32, 32, 32));
-        leftFrames[2] = getScaledImage(image.getSubimage(64, 32, 32, 32));
-
-        rightFrames = new Image[3];
-        rightFrames[0] = getScaledImage(image.getSubimage(0, 64, 32, 32));
-        rightFrames[1] = getScaledImage(image.getSubimage(32, 64, 32, 32));
-        rightFrames[2] = getScaledImage(image.getSubimage(64, 64, 32, 32));
-
-        upFrames = new Image[3];
-        upFrames[0] = getScaledImage(image.getSubimage(0, 96, 32, 32));
-        upFrames[1] = getScaledImage(image.getSubimage(32, 96, 32, 32));
-        upFrames[2] = getScaledImage(image.getSubimage(64, 96, 32, 32));
+    private Image[] loadFrames(int rowIndex) {
+        Image[] frames = new Image[FRAME_COUNT];
+        for (int i = 0; i < FRAME_COUNT; i++) {
+            frames[i] = getScaledImage(image.getSubimage(i * 32, rowIndex * 32, 32, 32));
+        }
+        return frames;
     }
+
+    private void loadAnimationFrames() {
+        downFrames = loadFrames(0);
+        leftFrames = loadFrames(1);
+        rightFrames = loadFrames(2);
+        upFrames = loadFrames(3);
+    }
+
 
     private Image getScaledImage(BufferedImage img) {
         int scaledWidth = (int)(img.getWidth() * scaleFactor);
