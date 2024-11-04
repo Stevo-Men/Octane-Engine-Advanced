@@ -76,6 +76,7 @@ public class Knife extends MovableEntity {
         g2d.rotate(rotationAngle, x + getWidth() / 2, y + getHeight() / 2);
         drawUpdated(g2d,0,0);
         g2d.setTransform(originalTransform);
+        canvas.drawString("x :" + x + "y :" + y,x,y,Color.RED);
     }
 
     public void drawUpdated(Graphics2D g2d, int offsetX, int offsetY) {

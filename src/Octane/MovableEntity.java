@@ -1,6 +1,8 @@
 package Octane;
 
 
+import TheProjekt.Camera;
+
 import java.awt.*;
 
 public abstract class MovableEntity extends StaticEntity {
@@ -28,6 +30,7 @@ public abstract class MovableEntity extends StaticEntity {
     private int lastX = Integer.MIN_VALUE;
     private int lastY = Integer.MIN_VALUE;
     private Collision collision;
+
 
     public void update() {
         moved = false;

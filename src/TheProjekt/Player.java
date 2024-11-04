@@ -147,5 +147,4 @@ public class Player extends ContrallableEntity {
 
     }
 
-
 }
