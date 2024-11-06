@@ -14,7 +14,7 @@ public class Enemy extends MovableEntity {
     private static final int ANIMATION_SPEED = 8;
     private int currentAnimationFrame = 1;
     private int nextFrame = ANIMATION_SPEED;
-    private static int ENEMY_HEALTH = 100;
+    private  int ENEMY_HEALTH = 100;
     private BufferedImage image;
     private Image[] rightFrames;
     private Image[] leftFrames;
@@ -28,10 +28,11 @@ public class Enemy extends MovableEntity {
     private boolean path2 = false;
     private boolean path3 = false;
     private boolean path4 = false;
+    private boolean isDamaged = false;
+    private int health = 50;
 
     public Enemy() {
-        x = 400;
-        y = 200;
+
         setDimensions((int)(32 * scaleFactor), (int)(32 * scaleFactor));
         speed = 2;
         load();
@@ -74,6 +75,15 @@ public class Enemy extends MovableEntity {
             currentAnimationFrame = 1;
         }
     }
+
+//    public void update(Player player) {
+//
+//        handleAnimationEnemy();
+//        coolDown();
+//        takeAction(player);
+//
+//
+//    }
 
 
     private void moveByPath() {
@@ -163,6 +173,28 @@ public class Enemy extends MovableEntity {
         }
     }
 
+    public int getHealth() {
+        return health;
+    }
+
+
+
+    public void isTouched(Knife knife) {
+        this.health -= knife.damage;
+
+    }
+
+    public boolean isTouched() {
+        return isDamaged;
+    }
+
+    private void drawHealthEnemy(Canvas canvas,int offsetX, int offsetY) {
+        canvas.drawHealthNPC(x - 7 + offsetX,y - 1 + offsetY - 10,52,8,Color.BLACK);
+        canvas.drawHealthNPC(x - 6 + offsetX,y + offsetY - 10,50,6,Color.RED);
+        canvas.drawHealthNPC(x - 6 + offsetX ,y + offsetY - 10 ,this.health,6,Color.GREEN);
+
+    }
+
 
     @Override
     public boolean hasMoved() {
@@ -181,8 +213,8 @@ public class Enemy extends MovableEntity {
         } else if (getDirection() == Direction.DOWN) {
             canvas.drawImage(downFrames[currentAnimationFrame], x + offsetX, y + offsetY);
         }
-        canvas.drawRectangle(x + offsetX,y + offsetY - 10,50,5,Color.RED);
-        canvas.drawRectangle(x + offsetX,y + offsetY - 10,ENEMY_HEALTH/2,5,Color.GREEN);
+        drawHealthEnemy(canvas, offsetX, offsetY);
+
 
     }
 

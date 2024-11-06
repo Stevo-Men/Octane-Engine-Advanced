@@ -49,4 +49,10 @@ public class Canvas {
     public Graphics2D getGraphics() {
         return graphics;
     }
+
+    public void drawHealthNPC(int x, int y, int width, int height, Paint paint) {
+        graphics.setPaint(paint);
+        graphics.fillRoundRect(x, y, width, height, 10, 10);
+    }
+
 }

@@ -1,10 +1,12 @@
 package TheProjekt;
 
 import Octane.*;
+import Octane.Canvas;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import java.awt.*;
 import java.util.ArrayList;
 
 public class TheProjektGame extends Game {
@@ -31,8 +33,9 @@ public class TheProjektGame extends Game {
         world = new World();
         world.load();
         camera = new Camera(cameraWidth, cameraHeight);
-        enemy = new Enemy();
+        enemies = new ArrayList<>();
         knives = new ArrayList<>();
+        enemies.add(new Enemy());
 
 
         try {
@@ -58,7 +61,7 @@ public class TheProjektGame extends Game {
 
 
         player.update();
-        enemy.update();
+
         camera.update(player);
 
         if (soundCooldown > 0) {
@@ -72,46 +75,68 @@ public class TheProjektGame extends Game {
             soundCooldown = SOUND_COOLDOWN_DURATION;
         }
 
-        for (Knife knife : knives) {
-//            if (knife.isOutOfBounds() || !knife.isFlying()) {
-//                killedElements.add(knife);
+        for (Enemy enemy : enemies) {
+//            if (enemy.canAttack(player)) {
+//                enemy.isAttacking = true;
+//                enemy.attack(player);
+//            } else {
+//                enemy.isAttacking = false;
 //            }
-//            knife.update();
-//
-//            for (Enemy enemy : enemies) {
-//                if (knife.hitBoxIntersectWith(enemy)) {
-//                    killedElements.add(knife);
-//                    enemy.isTouched(knife);
-//                    enemy.isTouched();
-//
-//                    if (enemy.getHealth() <= 0) {
-//                        killedElements.add(enemy);
-//                    }
-//                }
+//            if (enemy.isChasing(player)) {
+//                player.detectedState = npc.isChasing(player);
 //            }
+            //enemy.update(player);
+            enemy.update();
         }
 
-//        for (StaticEntity killedElement : killedElements) {
-//            if (killedElement instanceof Enemies) {
-//                npcs.remove(killedElement);
-//                player.detectedState = false;
-//            }
-//            if (killedElement instanceof Knife) {
-//                knives.remove(killedElement);
-//            }
-//        }
-//        CollidableRepository.getInstance().unregisterEntities(killedElements);
+
+        for (Knife knife : knives) {
+            if (knife.isOutOfBounds() || !knife.isFlying()) {
+                killedElements.add(knife);
+            }
+              knife.update();
+
+            for (Enemy enemy : enemies) {
+                if (knife.hitBoxIntersectWith(enemy)) {
+                    killedElements.add(knife);
+                    enemy.isTouched(knife);
+                    enemy.isTouched();
+
+                    if (enemy.getHealth() <= 0) {
+                        killedElements.add(enemy);
+                    }
+                }
+            }
+        }
+
+        for (StaticEntity killedElement : killedElements) {
+            if (killedElement instanceof Enemy) {
+                enemies.remove(killedElement);
+               // player.detectedState = false;
+            }
+            if (killedElement instanceof Knife) {
+                knives.remove(killedElement);
+            }
+        }
+        CollidableRepository.getInstance().unregisterEntities(killedElements);
     }
 
     @Override
     protected void draw(Canvas canvas) {
         world.draw(canvas, -camera.getX(), -camera.getY());
         player.draw(canvas, -camera.getX(), -camera.getY());
-        enemy.draw(canvas, -camera.getX(), -camera.getY());
 
+
+        for (Enemy enemy : enemies) {
+            enemy.draw(canvas, -camera.getX(), -camera.getY());
+            canvas.drawRectangle(enemy, Color.RED);
+        }
 
         for (Knife knife : knives) {
             knife.draw(canvas, -camera.getX(), -camera.getY());
+            canvas.drawRectangle(knife, Color.RED);
         }
+
+        canvas.drawRectangle(player,Color.BLUE);
     }
 }

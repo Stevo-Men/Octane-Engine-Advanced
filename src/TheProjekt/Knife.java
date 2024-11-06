@@ -19,28 +19,26 @@ public class Knife extends MovableEntity {
     private Image image;
     protected int damage = 25;
     private double currentSpeed;
-    private double acceleration = 0.3;
+    private final double KNIFE_ACCELERATION = 0.3;
 
 
     public Knife(Player player) {
-        setSpeed(9);
+        setSpeed(10); // Higher initial speed
         currentSpeed = getSpeed();
         playerDirection = player.getDirection();
         load();
         initialize(player);
         CollidableRepository.getInstance().registerEntity(this);
+
     }
+
 
 
 
     @Override
     public void update() {
-        currentSpeed -= acceleration;
-        if (currentSpeed <= 0) {
-            currentSpeed = 0; // Stop knife if it has no speed
-        }
+        currentSpeed -= KNIFE_ACCELERATION;
 
-        // Update position based on direction
         if (playerDirection == Direction.RIGHT) {
             x += (int) currentSpeed;
         } else if (playerDirection == Direction.LEFT) {
@@ -49,6 +47,9 @@ public class Knife extends MovableEntity {
             y += (int) currentSpeed;
         } else if (playerDirection == Direction.UP) {
             y -= (int) currentSpeed;
+        }
+        if (currentSpeed <= 0) {
+            currentSpeed = 0;
         }
     }
 
