@@ -164,18 +164,6 @@ public class Enemy extends MovableEntity {
     }
 
 
-    //    public void draw(Canvas canvas, int offsetX, int offsetY) {
-//        if (getDirection() == Direction.RIGHT) {
-//            canvas.drawImage(rightFrames[currentAnimationFrame], x + offsetX, y + offsetY);
-//        } else if (getDirection() == Direction.LEFT) {
-//            canvas.drawImage(leftFrames[currentAnimationFrame], x + offsetX, y + offsetY);
-//        } else if (getDirection() == Direction.UP) {
-//            canvas.drawImage(upFrames[currentAnimationFrame], x + offsetX, y + offsetY);
-//        } else if (getDirection() == Direction.DOWN) {
-//            canvas.drawImage(downFrames[currentAnimationFrame], x + offsetX, y + offsetY);
-//        }
-//    }
-
     @Override
     public boolean hasMoved() {
         return getDirection() != null && (speed > 0);
@@ -183,11 +171,6 @@ public class Enemy extends MovableEntity {
 
 
     @Override
-    public void draw(Canvas canvas) {
-        draw(canvas, 0, 0);
-    }
-
-
     public void draw(Canvas canvas, int offsetX, int offsetY) {
         if (getDirection() == Direction.RIGHT) {
             canvas.drawImage(rightFrames[currentAnimationFrame], x + offsetX, y + offsetY);
@@ -200,5 +183,7 @@ public class Enemy extends MovableEntity {
         }
         canvas.drawRectangle(x + offsetX,y + offsetY - 10,50,5,Color.RED);
         canvas.drawRectangle(x + offsetX,y + offsetY - 10,ENEMY_HEALTH/2,5,Color.GREEN);
+
     }
+
 }

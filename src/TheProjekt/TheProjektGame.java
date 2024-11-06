@@ -1,8 +1,6 @@
 package TheProjekt;
 
-import Octane.Canvas;
-import Octane.Game;
-import Octane.RenderingEngine;
+import Octane.*;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -21,6 +19,8 @@ public class TheProjektGame extends Game {
     private int cameraWidth = 1200;
     private int cameraHeight = 900;
     private ArrayList<Knife> knives;
+    private ArrayList<Enemy> enemies;
+    ArrayList<StaticEntity> killedElements = new ArrayList<>();
 
 
     @Override
@@ -76,20 +76,31 @@ public class TheProjektGame extends Game {
 //            if (knife.isOutOfBounds() || !knife.isFlying()) {
 //                killedElements.add(knife);
 //            }
-            knife.update();
-
-//            for (Enemy enemy : ennemies) {
-//                if (knife.hitBoxIntersectWith(npc)) {
+//            knife.update();
+//
+//            for (Enemy enemy : enemies) {
+//                if (knife.hitBoxIntersectWith(enemy)) {
 //                    killedElements.add(knife);
-//                    npc.isTouched(knife);
-//                    npc.isTouched();
-//1
-//                    if (npc.getHealth() <= 0) {
-//                        killedElements.add(npc);
+//                    enemy.isTouched(knife);
+//                    enemy.isTouched();
+//
+//                    if (enemy.getHealth() <= 0) {
+//                        killedElements.add(enemy);
 //                    }
 //                }
 //            }
         }
+
+//        for (StaticEntity killedElement : killedElements) {
+//            if (killedElement instanceof Enemies) {
+//                npcs.remove(killedElement);
+//                player.detectedState = false;
+//            }
+//            if (killedElement instanceof Knife) {
+//                knives.remove(killedElement);
+//            }
+//        }
+//        CollidableRepository.getInstance().unregisterEntities(killedElements);
     }
 
     @Override
@@ -100,7 +111,7 @@ public class TheProjektGame extends Game {
 
 
         for (Knife knife : knives) {
-            knife.draw(canvas);
+            knife.draw(canvas, -camera.getX(), -camera.getY());
         }
     }
 }

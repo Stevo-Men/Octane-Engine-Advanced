@@ -36,7 +36,11 @@ public class Knife extends MovableEntity {
     @Override
     public void update() {
         currentSpeed -= acceleration;
+        if (currentSpeed <= 0) {
+            currentSpeed = 0; // Stop knife if it has no speed
+        }
 
+        // Update position based on direction
         if (playerDirection == Direction.RIGHT) {
             x += (int) currentSpeed;
         } else if (playerDirection == Direction.LEFT) {
@@ -46,10 +50,8 @@ public class Knife extends MovableEntity {
         } else if (playerDirection == Direction.UP) {
             y -= (int) currentSpeed;
         }
-        if (currentSpeed <= 0) {
-            currentSpeed = 0;
-        }
     }
+
 
     public void updatedThrowKnife() {
 
@@ -63,25 +65,25 @@ public class Knife extends MovableEntity {
     }
 
     @Override
-    public void draw(Canvas canvas) {
+    public void draw(Canvas canvas, int offsetX, int offsetY) {
         Graphics2D g2d = canvas.getGraphics();
         AffineTransform originalTransform = g2d.getTransform();
 
+        // Set rotation based on direction
         double rotationAngle = switch (playerDirection) {
             case RIGHT -> Math.PI / 2;
             case LEFT -> -Math.PI / 2;
             case DOWN -> Math.PI;
             case UP -> 0.0;
         };
-        g2d.rotate(rotationAngle, x + getWidth() / 2, y + getHeight() / 2);
-        drawUpdated(g2d,0,0);
+
+        // Apply rotation and draw the image at camera-relative position
+        g2d.rotate(rotationAngle, x + offsetX + getWidth() / 2, y + offsetY + getHeight() / 2);
+        g2d.drawImage(image, x + offsetX, y + offsetY, null);
         g2d.setTransform(originalTransform);
-        canvas.drawString("x :" + x + "y :" + y,x,y,Color.RED);
     }
 
-    public void drawUpdated(Graphics2D g2d, int offsetX, int offsetY) {
-        g2d.drawImage(image, x - offsetX, y - offsetY, null);
-    }
+
 
 
     private void initialize(Player player) {

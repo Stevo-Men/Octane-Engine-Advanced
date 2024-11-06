@@ -117,21 +117,6 @@ public class Player extends ContrallableEntity {
     }
 
     @Override
-    public void draw(Canvas canvas) {
-        draw(canvas, 0, 0);
-
-    }
-
-    public int cameraX(int offsetX) {
-        return x + offsetX;
-    }
-
-    public int cameraY(int offsetY) {
-        return y + offsetY;
-    }
-
-
-
     public void draw(Canvas canvas, int offsetX, int offsetY) {
         if (getDirection() == Direction.RIGHT) {
             canvas.drawImage(rightFrames[currentAnimationFrame], cameraX(offsetX), cameraY(offsetY));
@@ -146,5 +131,19 @@ public class Player extends ContrallableEntity {
         canvas.drawRectangle(x + offsetX,y + offsetY - 10,PLAYER_HEALTH/2,5,Color.GREEN);
 
     }
+
+    public int cameraX(int offsetX) {
+        return x + offsetX;
+    }
+
+
+
+    public int cameraY(int offsetY) {
+        return y + offsetY;
+    }
+
+
+
+
 
 }
