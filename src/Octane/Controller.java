@@ -1,4 +1,4 @@
-package MovingRectangle;
+package Octane;
 
 import Octane.RenderingEngine;
 
