@@ -109,17 +109,21 @@ public class TheProjektGame extends Game {
             }
         }
 
+        cleanUpEntities();
+    }
+
+    private void cleanUpEntities() {
         for (StaticEntity killedElement : killedElements) {
             if (killedElement instanceof Enemy) {
                 enemies.remove(killedElement);
-               // player.detectedState = false;
-            }
-            if (killedElement instanceof Knife) {
+            } else if (killedElement instanceof Knife) {
                 knives.remove(killedElement);
             }
         }
         CollidableRepository.getInstance().unregisterEntities(killedElements);
+        killedElements.clear();
     }
+
 
     @Override
     protected void draw(Canvas canvas) {

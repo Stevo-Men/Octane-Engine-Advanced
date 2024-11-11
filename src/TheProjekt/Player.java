@@ -9,6 +9,8 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Player extends ContrallableEntity {
     private static final String SPRITE_PATH = "images/player2.png";
@@ -17,12 +19,9 @@ public class Player extends ContrallableEntity {
     private int nextFrame = ANIMATION_SPEED;
     private static final int FRAME_COUNT = 3;
     private BufferedImage image;
-    private Image[] rightFrames;
-    private Image[] leftFrames;
-    private Image[] upFrames;
-    private Image[] downFrames;
-    private double scaleFactor = 2.0;
-    private static int PLAYER_HEALTH = 100;
+    private Map<Direction, Image[]> directionFrames;
+    private double SCALE_FACTOR= 2.0;
+    private static int PLAYER_MAX_HEALTH = 100;
     int knifeMunition = 10;
     public  int playerHealth = 100;
     private int cooldown = 0;
@@ -31,7 +30,7 @@ public class Player extends ContrallableEntity {
 
     public Player(MovementController controller) {
         super(controller);
-        setDimensions((int)(32 * scaleFactor), (int)(32 * scaleFactor));
+        setDimensions((int)(32 * SCALE_FACTOR), (int)(32 * SCALE_FACTOR));
         setSpeed(4);
         load();
     }
@@ -54,6 +53,17 @@ public class Player extends ContrallableEntity {
         loadAnimationFrames();
     }
 
+
+
+    private void loadAnimationFrames() {
+        directionFrames = new HashMap<>();
+        directionFrames.put(Direction.DOWN, loadFrames(0));
+        directionFrames.put(Direction.LEFT, loadFrames(1));
+        directionFrames.put(Direction.RIGHT, loadFrames(2));
+        directionFrames.put(Direction.UP, loadFrames(3));
+    }
+
+
     private Image[] loadFrames(int rowIndex) {
         Image[] frames = new Image[FRAME_COUNT];
         for (int i = 0; i < FRAME_COUNT; i++) {
@@ -62,17 +72,9 @@ public class Player extends ContrallableEntity {
         return frames;
     }
 
-    private void loadAnimationFrames() {
-        downFrames = loadFrames(0);
-        leftFrames = loadFrames(1);
-        rightFrames = loadFrames(2);
-        upFrames = loadFrames(3);
-    }
-
-
     private Image getScaledImage(BufferedImage img) {
-        int scaledWidth = (int)(img.getWidth() * scaleFactor);
-        int scaledHeight = (int)(img.getHeight() * scaleFactor);
+        int scaledWidth = (int)(img.getWidth() * SCALE_FACTOR);
+        int scaledHeight = (int)(img.getHeight() * SCALE_FACTOR);
         BufferedImage scaledImage = new BufferedImage(scaledWidth, scaledHeight, img.getType());
 
         Graphics2D g2d = scaledImage.createGraphics();
@@ -100,40 +102,34 @@ public class Player extends ContrallableEntity {
         super.update();
         moveWithController();
 
-
+        if (cooldown > 0) {
+            cooldown--;
+        }
 
         if (hasMoved()) {
-            --nextFrame;
+            nextFrame--;
             if (nextFrame == 0) {
-                ++currentAnimationFrame;
-                if (currentAnimationFrame >= leftFrames.length) {
-                    currentAnimationFrame = 0;
-                }
+                currentAnimationFrame = (currentAnimationFrame + 1) % FRAME_COUNT;
                 nextFrame = ANIMATION_SPEED;
             }
         } else {
-            currentAnimationFrame = 1;
+            currentAnimationFrame = 0; // Reset to idle frame when not moving
         }
     }
 
+
     @Override
     public void draw(Canvas canvas, int offsetX, int offsetY) {
+        Image[] frames = directionFrames.get(getDirection());
+        canvas.drawImage(frames[currentAnimationFrame], cameraX(offsetX), cameraY(offsetY));
+        drawHealthBar(canvas, offsetX, offsetY);
+    }
 
-
-        if (getDirection() == Direction.RIGHT) {
-            canvas.drawImage(rightFrames[currentAnimationFrame], cameraX(offsetX), cameraY(offsetY));
-        } else if (getDirection() == Direction.LEFT) {
-            canvas.drawImage(leftFrames[currentAnimationFrame], cameraX(offsetX), cameraY(offsetY));
-        } else if (getDirection() == Direction.UP) {
-            canvas.drawImage(upFrames[currentAnimationFrame], cameraX(offsetX), cameraY(offsetY));
-        } else if (getDirection() == Direction.DOWN) {
-            canvas.drawImage(downFrames[currentAnimationFrame], cameraX(offsetX), cameraY(offsetY));
-        }
-
-
-        canvas.drawRectangle(x + offsetX,y + offsetY - 10,50,5,Color.RED);
-        canvas.drawRectangle(x + offsetX,y + offsetY - 10,PLAYER_HEALTH/2,5,Color.GREEN);
-
+    private void drawHealthBar(Canvas canvas, int offsetX, int offsetY) {
+        int barWidth = 50;
+        canvas.drawRectangle(x + offsetX, y + offsetY - 10, barWidth, 5, Color.RED);
+        int healthWidth = (playerHealth * barWidth) / PLAYER_MAX_HEALTH;
+        canvas.drawRectangle(x + offsetX, y + offsetY - 10, healthWidth, 5, Color.GREEN);
     }
 
     public int cameraX(int offsetX) {
