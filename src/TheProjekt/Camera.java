@@ -3,12 +3,16 @@ package TheProjekt;
 public class Camera {
     private int x;
     private int y;
-    private int width;
-    private int height;
+    private final int width;
+    private final int height;
+    private final int worldWidth;
+    private final int worldHeight;
 
-    public Camera(int width, int height) {
+    public Camera(int width, int height, int worldWidth, int worldHeight) {
         this.width = width;
         this.height = height;
+        this.worldWidth = worldWidth;
+        this.worldHeight = worldHeight;
         this.x = 0;
         this.y = 0;
     }
@@ -18,13 +22,9 @@ public class Camera {
         this.x = player.getX() - width / 2;
         this.y = player.getY() - height / 2;
 
-
-        int worldWidth = 2000;
-        int worldHeight = 2000;
-        if (x < 0) x = 0;
-        if (y < 0) y = 0;
-        if (x + width > worldWidth) x = worldWidth - width;
-        if (y + height > worldHeight) y = worldHeight - height;
+        // Ensure camera stays within world boundaries
+        x = Math.max(0, Math.min(x, worldWidth - width));
+        y = Math.max(0, Math.min(y, worldHeight - height));
     }
 
     public int getX() {
@@ -33,5 +33,13 @@ public class Camera {
 
     public int getY() {
         return y;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 }

@@ -32,7 +32,7 @@ public class TheProjektGame extends Game {
         player.teleport(200, 200);
         world = new World();
         world.load();
-        camera = new Camera(cameraWidth, cameraHeight);
+        camera = new Camera(cameraWidth, cameraHeight,2048,2048);
         enemies = new ArrayList<>();
         knives = new ArrayList<>();
         enemies.add(new Enemy());

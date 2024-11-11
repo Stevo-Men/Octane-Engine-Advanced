@@ -11,31 +11,30 @@
 
     public class World {
         private static final String MAP_PATH = "images/sewer_map.png";
+        private static final double ZOOM_FACTOR = 2.0;
         private Image background;
-        private double zoomFactor = 2.0;
 
         public void load() {
             try {
                 BufferedImage originalImage = ImageIO.read(
                         this.getClass().getClassLoader().getResourceAsStream(MAP_PATH)
                 );
-
-                int scaledWidth = (int) (originalImage.getWidth() * zoomFactor);
-                int scaledHeight = (int) (originalImage.getHeight() * zoomFactor);
-
-
-                BufferedImage scaledImage = new BufferedImage(scaledWidth, scaledHeight, originalImage.getType());
-
-                Graphics2D g2d = scaledImage.createGraphics();
-                g2d.drawImage(originalImage, 0, 0, scaledWidth, scaledHeight, null);
-                g2d.dispose();
-
-                background = scaledImage;
-
+                background = scaleImage(originalImage, ZOOM_FACTOR);
             } catch (IOException e) {
                 System.err.println("Error loading or scaling map image: " + e.getMessage());
                 e.printStackTrace();
             }
+        }
+        private Image scaleImage(BufferedImage originalImage, double scaleFactor) {
+            int scaledWidth = (int) (originalImage.getWidth() * scaleFactor);
+            int scaledHeight = (int) (originalImage.getHeight() * scaleFactor);
+
+            BufferedImage scaledImage = new BufferedImage(scaledWidth, scaledHeight, originalImage.getType());
+            Graphics2D g2d = scaledImage.createGraphics();
+            g2d.drawImage(originalImage, 0, 0, scaledWidth, scaledHeight, null);
+            g2d.dispose();
+
+            return scaledImage;
         }
 
         public void draw(Canvas canvas, int offsetX, int offsetY) {
