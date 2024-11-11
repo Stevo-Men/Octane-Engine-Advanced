@@ -100,7 +100,7 @@ public class TheProjektGame extends Game {
                 if (knife.hitBoxIntersectWith(enemy)) {
                     killedElements.add(knife);
                     enemy.isTouched(knife);
-                    enemy.isTouched();
+
 
                     if (enemy.getHealth() <= 0) {
                         killedElements.add(enemy);
