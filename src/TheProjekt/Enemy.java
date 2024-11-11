@@ -130,7 +130,7 @@ public class Enemy extends MovableEntity {
 
 
     public void isTouched(Knife knife) {
-        this.health -= knife.damage;
+        this.health -= knife.DAMAGE;
     }
 
 

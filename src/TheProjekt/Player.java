@@ -18,7 +18,7 @@ public class Player extends ContrallableEntity {
     private int currentAnimationFrame = 1;
     private int nextFrame = ANIMATION_SPEED;
     private static final int FRAME_COUNT = 3;
-    private BufferedImage image;
+    private BufferedImage spriteSheet;
     private Map<Direction, Image[]> directionFrames;
     private double SCALE_FACTOR= 2.0;
     private static int PLAYER_MAX_HEALTH = 100;
@@ -67,7 +67,7 @@ public class Player extends ContrallableEntity {
     private Image[] loadFrames(int rowIndex) {
         Image[] frames = new Image[FRAME_COUNT];
         for (int i = 0; i < FRAME_COUNT; i++) {
-            frames[i] = getScaledImage(image.getSubimage(i * 32, rowIndex * 32, 32, 32));
+            frames[i] = getScaledImage(spriteSheet.getSubimage(i * 32, rowIndex * 32, 32, 32));
         }
         return frames;
     }
@@ -86,7 +86,7 @@ public class Player extends ContrallableEntity {
 
     private void loadSpriteSheet() {
         try {
-            image = ImageIO.read(
+            spriteSheet = ImageIO.read(
                     this.getClass().getClassLoader().getResourceAsStream(SPRITE_PATH)
             );
         } catch (IOException e) {
