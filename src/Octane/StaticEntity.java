@@ -9,9 +9,9 @@ public abstract class StaticEntity {
     protected int y;
     protected int width;
     protected int height;
-    private Camera camera;
 
-    public abstract void draw(Canvas canvas, int offsetX, int offsetY);
+
+    public abstract void draw(Canvas canvas);
 
     public boolean intersectWith(StaticEntity entity) {
         return getBounds().intersects(entity.getBounds());

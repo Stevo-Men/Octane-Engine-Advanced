@@ -6,9 +6,12 @@ import TheProjekt.Camera;
 import java.awt.*;
 
 public abstract class MovableEntity extends StaticEntity {
-
+    private int lastX = Integer.MIN_VALUE;
+    private int lastY = Integer.MIN_VALUE;
+    private Collision collision;
     private int speed = 1;
     private boolean moved = false;
+
     public int getSpeed() {
         return speed;
     }
@@ -26,10 +29,6 @@ public abstract class MovableEntity extends StaticEntity {
     public void setDirection(Direction direction) {
         this.direction = direction;
     }
-
-    private int lastX = Integer.MIN_VALUE;
-    private int lastY = Integer.MIN_VALUE;
-    private Collision collision;
 
 
     public void update() {

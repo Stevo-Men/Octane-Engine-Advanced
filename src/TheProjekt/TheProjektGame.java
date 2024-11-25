@@ -18,8 +18,8 @@ public class TheProjektGame extends Game {
     private int soundCooldown;
     private static final int SOUND_COOLDOWN_DURATION = 30;
     private Camera camera;
-    private int cameraWidth = 1200;
-    private int cameraHeight = 900;
+    private int cameraWidth = 1280;
+    private int cameraHeight = 800;
     private ArrayList<Knife> knives;
     private ArrayList<Enemy> enemies;
     ArrayList<StaticEntity> killedElements = new ArrayList<>();
@@ -28,26 +28,28 @@ public class TheProjektGame extends Game {
     @Override
     protected void initialize() {
         gamePad = new GamePad();
+        camera = new Camera(cameraWidth, cameraHeight);
         player = new Player(gamePad);
-        player.teleport(200, 200);
+        player.teleport(640, 400);
         world = new World();
         world.load();
-        camera = new Camera(cameraWidth, cameraHeight,2048,2048);
         enemies = new ArrayList<>();
         knives = new ArrayList<>();
-        enemies.add(new Enemy());
+        enemies.add(new Enemy(player,200,200));
+        enemies.add(new Enemy(player,700,400));
 
 
-        try {
-            Clip clip = AudioSystem.getClip();
-            AudioInputStream stream = AudioSystem.getAudioInputStream(
-                    this.getClass().getClassLoader().getResourceAsStream("audio/testMusicIntro.wav"));
-            clip.open(stream);
-            clip.loop(Clip.LOOP_CONTINUOUSLY);
-            clip.start();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
+//        try {
+//            Clip clip = AudioSystem.getClip();
+//            AudioInputStream stream = AudioSystem.getAudioInputStream(
+//                    this.getClass().getClassLoader().getResourceAsStream("audio/testMusicIntro.wav"));
+//            clip.open(stream);
+//            clip.loop(Clip.LOOP_CONTINUOUSLY);
+//            clip.start();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         RenderingEngine.getInstance().getScreen().toggleFullscreen();
         RenderingEngine.getInstance().getScreen().hideCursor();
     }
@@ -58,11 +60,17 @@ public class TheProjektGame extends Game {
             stopPlaying();
         }
 
-
-
         player.update();
 
+
+        // Calculate camera offset before updating it
+        int previousCameraX = camera.getX();
+        int previousCameraY = camera.getY();
         camera.update(player);
+        int cameraOffsetX = previousCameraX - camera.getX();
+        int cameraOffsetY = previousCameraY - camera.getY();
+
+
 
         if (soundCooldown > 0) {
             soundCooldown--;
@@ -75,28 +83,22 @@ public class TheProjektGame extends Game {
             soundCooldown = SOUND_COOLDOWN_DURATION;
         }
 
+        // Update enemies and adjust their positions based on camera movement
         for (Enemy enemy : enemies) {
-//            if (enemy.canAttack(player)) {
-//                enemy.isAttacking = true;
-//                enemy.attack(player);
-//            } else {
-//                enemy.isAttacking = false;
-//            }
-//            if (enemy.isChasing(player)) {
-//                player.detectedState = npc.isChasing(player);
-//            }
-            //enemy.update(player);
             enemy.update();
+          //  enemy.moveWithOffset(cameraOffsetX, cameraOffsetY); // Adjust enemy position directly
         }
 
 
+
         for (Knife knife : knives) {
-            if (knife.isOutOfBounds() || !knife.isFlying()) {
+            if ( !knife.isFlying()) {
                 killedElements.add(knife);
             }
               knife.update();
 
             for (Enemy enemy : enemies) {
+
                 if (knife.hitBoxIntersectWith(enemy)) {
                     killedElements.add(knife);
                     enemy.isTouched(knife);
@@ -128,19 +130,26 @@ public class TheProjektGame extends Game {
     @Override
     protected void draw(Canvas canvas) {
         world.draw(canvas, -camera.getX(), -camera.getY());
-        player.draw(canvas, -camera.getX(), -camera.getY());
+        player.draw(canvas, camera);
+
+
 
 
         for (Enemy enemy : enemies) {
-            enemy.draw(canvas, -camera.getX(), -camera.getY());
-            canvas.drawRectangle(enemy, Color.RED);
+            enemy.draw(canvas, camera);
+           canvas.drawRectangleMap(enemy, Color.RED);
         }
 
         for (Knife knife : knives) {
-            knife.draw(canvas, -camera.getX(), -camera.getY());
-            canvas.drawRectangle(knife, Color.RED);
+            knife.draw(canvas);
+            canvas.drawRectangleMap(knife, Color.RED);
         }
 
-        canvas.drawRectangle(player,Color.BLUE);
+        canvas.drawText("Camera X: "+ camera.getX()+"Camera Y: " + camera.getY(),100,700);
+        canvas.drawRectangleMap(player,Color.BLUE);
+        canvas.drawText("Player X: " + player.getX() + "Player Y: " + player.getY(),100,800);
+
+
+
     }
 }

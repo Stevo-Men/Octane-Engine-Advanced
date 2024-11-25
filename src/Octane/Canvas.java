@@ -25,8 +25,18 @@ public class Canvas {
         drawRectangle(entity.getX(), entity.getY(), entity.getWidth(), entity.getHeight(), paint);
     }
 
+    public void drawRectangleMap(StaticEntity entity, Paint paint) {
+
+        drawRectangle(entity.getX()/2, entity.getY()/2, entity.getWidth()/2, entity.getHeight()/2, paint);
+    }
+
     public void drawRectangle(int x, int y, int width, int height, Paint paint) {
         graphics.setPaint(paint);
+        graphics.fillRect(x, y, width, height);
+    }
+
+    public void drawCamera(int x, int y, int width, int height) {
+        graphics.setPaint(new Color(255, 136, 0, 118));
         graphics.fillRect(x, y, width, height);
     }
 

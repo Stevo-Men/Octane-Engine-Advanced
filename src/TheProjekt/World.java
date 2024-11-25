@@ -10,9 +10,10 @@
     import java.awt.Graphics2D;
 
     public class World {
-        private static final String MAP_PATH = "images/sewer_map.png";
-        private static final double ZOOM_FACTOR = 2.0;
+        private static final String MAP_PATH = "images/Level_0__Ground_Base.png";
+        private static final double ZOOM_FACTOR = 2;
         private Image background;
+
 
         public void load() {
             try {
@@ -26,6 +27,7 @@
             }
         }
         private Image scaleImage(BufferedImage originalImage, double scaleFactor) {
+
             int scaledWidth = (int) (originalImage.getWidth() * scaleFactor);
             int scaledHeight = (int) (originalImage.getHeight() * scaleFactor);
 
@@ -38,6 +40,11 @@
         }
 
         public void draw(Canvas canvas, int offsetX, int offsetY) {
+
             canvas.drawImage(background, offsetX, offsetY);
+            //canvas.drawRectangle(5000,5000,offsetX,offsetY,Color.BLUE);
+
         }
+
+
     }

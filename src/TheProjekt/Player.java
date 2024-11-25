@@ -1,9 +1,7 @@
 package TheProjekt;
 
+import Octane.*;
 import Octane.Canvas;
-import Octane.ContrallableEntity;
-import Octane.Direction;
-import Octane.MovementController;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -20,7 +18,7 @@ public class Player extends ContrallableEntity {
     private static final int FRAME_COUNT = 3;
     private BufferedImage spriteSheet;
     private Map<Direction, Image[]> directionFrames;
-    private double SCALE_FACTOR= 2.0;
+    private double SCALE_FACTOR= 2;
     private static int PLAYER_MAX_HEALTH = 100;
     int knifeMunition = 10;
     public  int playerHealth = 100;
@@ -28,10 +26,12 @@ public class Player extends ContrallableEntity {
 
 
 
+
     public Player(MovementController controller) {
         super(controller);
         setDimensions((int)(32 * SCALE_FACTOR), (int)(32 * SCALE_FACTOR));
         setSpeed(4);
+        CollidableRepository.getInstance().registerEntity(this);
         load();
     }
 
@@ -100,7 +100,12 @@ public class Player extends ContrallableEntity {
     @Override
     public void update() {
         super.update();
+
         moveWithController();
+
+
+//        constrainCameraToWorld();
+
 
         if (cooldown > 0) {
             cooldown--;
@@ -113,23 +118,68 @@ public class Player extends ContrallableEntity {
                 nextFrame = ANIMATION_SPEED;
             }
         } else {
-            currentAnimationFrame = 0; // Reset to idle frame when not moving
+            currentAnimationFrame = 0;
         }
+
+
     }
+
+//    private void constrainCameraToWorld() {
+//        // Ensure the camera does not go outside the world bounds
+//        if (x < 0) x = 0;
+//        if (y < 0) y = 0;
+//        if (x  > 2048) x = 2048;
+//        if (y  > 2048) y = 2048;
+//    }
 
 
     @Override
-    public void draw(Canvas canvas, int offsetX, int offsetY) {
+    public void draw(Canvas canvas) {
         Image[] frames = directionFrames.get(getDirection());
-        canvas.drawImage(frames[currentAnimationFrame], cameraX(offsetX), cameraY(offsetY));
-        drawHealthBar(canvas, offsetX, offsetY);
+        canvas.drawImage(frames[currentAnimationFrame], x,y);
+       // drawHealthBar(canvas);
     }
 
-    private void drawHealthBar(Canvas canvas, int offsetX, int offsetY) {
+
+
+    public void draw(Canvas canvas, Camera camera) {
+        int centerX = camera.getWidth() / 2 - getWidth() / 2; // Center on the screen
+        int centerY = camera.getHeight() / 2 - getHeight() / 2;
+
+        Image[] frames = directionFrames.get(getDirection());
+        canvas.drawImage(frames[currentAnimationFrame], centerX, centerY);
+
+        // Optionally draw player-related debug or UI elements
+        drawHealthBar(canvas, centerX, centerY - 10);
+    }
+
+
+
+//    public void draw(Canvas canvas, Camera camera) {
+//        Image[] frames = directionFrames.get(getDirection());
+//        x = camera.applyOffsetX(x);
+//        y  = camera.applyOffsetY(y);
+//
+//        // Draw player image at the adjusted position
+//        canvas.drawImage(frames[currentAnimationFrame], x, y);
+//
+//        // Draw health bar at the adjusted position
+//        drawHealthBar(canvas, x, y);
+//    }
+
+//    private void drawHealthBar(Canvas canvas, int drawX, int drawY) {
+//        int barWidth = 50;
+//        canvas.drawRectangle(drawX, drawY - 10, barWidth, 5, Color.RED);
+//        int healthWidth = (playerHealth * barWidth) / PLAYER_MAX_HEALTH;
+//        canvas.drawRectangle(drawX, drawY - 10, healthWidth, 5, Color.GREEN);
+//    }
+
+
+    private void drawHealthBar(Canvas canvas, int x, int y) {
         int barWidth = 50;
-        canvas.drawRectangle(x + offsetX, y + offsetY - 10, barWidth, 5, Color.RED);
+        canvas.drawRectangle(x , y - 10, barWidth, 5, Color.RED);
         int healthWidth = (playerHealth * barWidth) / PLAYER_MAX_HEALTH;
-        canvas.drawRectangle(x + offsetX, y + offsetY - 10, healthWidth, 5, Color.GREEN);
+        canvas.drawRectangle(x , y  - 10, healthWidth, 5, Color.GREEN);
     }
 
     public int cameraX(int offsetX) {

@@ -49,4 +49,6 @@ public class Collision {
     public interface DistanceCalculator {
         int calculateWith(StaticEntity other);
     }
+
+
 }
